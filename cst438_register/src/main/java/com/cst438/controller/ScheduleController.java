@@ -42,6 +42,59 @@ public class ScheduleController {
 	@Autowired
 	GradebookService gradebookService;
 	
+	@GetMapping("/addStudent")
+	public String getSchedule(@RequestParam("name") String name, @RequestParam("email") String email ) {
+		
+		Student student = studentRepository.findByEmail(email);
+		
+		if (student == null) {
+			Student newStudent = new Student();
+			newStudent.setName(name);
+			newStudent.setEmail(email);
+
+			studentRepository.save(newStudent);
+			
+			
+			
+			return "Successfully Added Student";
+		} else {
+			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student Already Exists" );
+		}
+	}
+	
+	@GetMapping("/holdStudent")
+	public String holdStudent(@RequestParam("email") String email ) {
+		
+		Student student = studentRepository.findByEmail(email);
+		
+		if (student != null) {
+			student.setStatus("HOLD");
+
+			studentRepository.save(student);
+			
+			
+			
+			return "Successfully Added HOLD";
+		} else {
+			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student doesn't exist" );
+		}
+	}
+	
+	@GetMapping("/unholdStudent")
+	public String unholdStudent(@RequestParam("email") String email ) {
+		
+		Student student = studentRepository.findByEmail(email);
+		
+		if (student != null) {
+			student.setStatus("");
+
+			studentRepository.save(student);			
+			
+			return "Successfully Removed HOLD";
+		} else {
+			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "Student doesn't exist" );
+		}
+	}
 	
 	/*
 	 * get current schedule for student.

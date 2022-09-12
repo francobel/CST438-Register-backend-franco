@@ -77,6 +77,53 @@ public class JunitTestSchedule {
 	private MockMvc mvc;
 
 	@Test
+	public void addStudent()  throws Exception {
+		
+		MockHttpServletResponse response;
+		
+		response = mvc.perform(
+				MockMvcRequestBuilders
+			      .get("/addStudent?name=" + TEST_STUDENT_NAME + "&email=" + TEST_STUDENT_EMAIL)
+			      ).andReturn().getResponse();
+		
+		// verify that return status = OK (value 200) 
+		assertEquals(200, response.getStatus());
+	}
+	
+	@Test
+	public void addHold()  throws Exception {
+		
+		MockHttpServletResponse response;
+		
+		response = mvc.perform(
+				MockMvcRequestBuilders
+			      .get("/holdStudent?email=" + TEST_STUDENT_EMAIL)
+			      ).andReturn().getResponse();
+		
+		// verify that return status = OK (value 200) 
+		assertEquals(200, response.getStatus());
+	}
+	
+	@Test
+	public void removeHold()  throws Exception {
+		
+		MockHttpServletResponse response;
+		
+		mvc.perform(
+				MockMvcRequestBuilders
+			      .get("/addStudent?name=" + TEST_STUDENT_NAME + "&email=" + TEST_STUDENT_EMAIL)
+			      ).andReturn().getResponse();
+		
+		response = mvc.perform(
+				MockMvcRequestBuilders
+			      .get("/holdStudent?email=" + TEST_STUDENT_EMAIL)
+			      ).andReturn().getResponse();
+		
+		// verify that return status = OK (value 200) 
+		assertEquals(200, response.getStatus());
+	}
+	
+	@Test
 	public void addCourse()  throws Exception {
 		
 		MockHttpServletResponse response;
