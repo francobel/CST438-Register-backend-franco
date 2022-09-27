@@ -51,10 +51,9 @@ public class ScheduleController {
 			Student newStudent = new Student();
 			newStudent.setName(name);
 			newStudent.setEmail(email);
+			newStudent.setStatus("0");
 
-			studentRepository.save(newStudent);
-			
-			
+			studentRepository.save(newStudent);			
 			
 			return "Successfully Added Student";
 		} else {
@@ -127,12 +126,7 @@ public class ScheduleController {
 		Student student = studentRepository.findByEmail(student_email);
 		Course course  = courseRepository.findById(courseDTO.course_id).orElse(null);
 		
-		// student.status
-		// = 0  ok to register
-		// != 0 hold on registration.  student.status may have reason for hold.
-		
 		if (student!= null && course!=null && student.getStatusCode()==0) {
-			// TODO check that today's date is not past add deadline for the course.
 			Enrollment enrollment = new Enrollment();
 			enrollment.setStudent(student);
 			enrollment.setCourse(course);
